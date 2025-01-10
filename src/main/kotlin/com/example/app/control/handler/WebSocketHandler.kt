@@ -49,10 +49,12 @@ class WebSocketHandler : TextWebSocketHandler() {
                 machineInfo.no = command.cmd.no
             }
             session.sendMessage(TextMessage("Server Update Success: ${machineInfo.toString()}"))
-        } catch (e : Exception) {
-            e.printStackTrace()
+        }  catch (e : com.fasterxml.jackson.databind.exc.MismatchedInputException) {
             // 发送响应消息
             session.sendMessage(TextMessage("Server received Plain Text: $payload"))
+        } catch (e : Exception) {
+            e.printStackTrace()
+            session.sendMessage(TextMessage("Server Error: $payload"))
         }
     }
 
